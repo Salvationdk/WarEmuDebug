@@ -60,7 +60,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GameServer\Connection.cs" />
-    <Compile Include="GameServer\Crypto.cs" />
     <Compile Include="GameServer\Crypto\CryptAttribute.cs" />
     <Compile Include="GameServer\Crypto\ICryptHandler.cs" />
     <Compile Include="GameServer\Crypto\RC4Crypto.cs" />

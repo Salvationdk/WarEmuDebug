@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.IO;
+using System.Runtime.InteropServices;
 namespace WarhammerEmu.GameServer
 {
     [Crypt("RC4Crypto")]
@@ -25,6 +26,18 @@ namespace WarhammerEmu.GameServer
         public CryptKey GenerateKey(Connection conn)
         {
             return new CryptKey(new byte[0]);
+        }
+
+        public static T ByteToType<T>(PacketIn packet)
+        {
+            BinaryReader reader = new BinaryReader(packet);
+            byte[] bytes = reader.ReadBytes(System.Runtime.InteropServices.Marshal.SizeOf(typeof(T)));
+
+            GCHandle handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+            T theStructure = (T)System.Runtime.InteropServices.Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            handle.Free();
+
+            return theStructure;
         }
     }
 }

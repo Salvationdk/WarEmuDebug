@@ -73,7 +73,7 @@ namespace WarhammerEmu.GameServer
 
         private void F_ENCRYPTKEY(PacketIn packet)
         {
-            sEncrypt Result = Crypto.ByteToType<sEncrypt>(packet);
+            sEncrypt Result = RC4Crypto.ByteToType<sEncrypt>(packet);
             string Version = Result.major + "." + Result.minor + "." + Result.revision;
             Log.Trace(Version + "cipher:" + Result.cipher);
 
