@@ -25,7 +25,7 @@ namespace WarhammerEmu.GameServer
             PacketOut.Struct = PackStruct.SizeAndOpcode;
 
 
-
+            Form1.activeConnection = this;
             this.socket = socket;
             this.listener = listener;
             Log.Debug("New connection");
@@ -160,6 +160,28 @@ namespace WarhammerEmu.GameServer
 
         }
 
+        public void SendCustomPacket(string hexStringBytes)
+        {
+            try
+            {
+                hexStringBytes = hexStringBytes.Replace(" ", "");
+
+                byte opcode = Convert.ToByte(hexStringBytes.Substring(0, 2), 16);
+
+                PacketOut packet = new PacketOut(opcode);
+                packet.WriteHexStringBytes(hexStringBytes.Remove(0, 2));
+
+                packet.WritePacketLength();
+                packet = Crypt(packet);
+                byte[] buf = packet.ToArray(); //packet.WritePacketLength sets the Capacity
+
+                socket.Send(buf);
+            }
+            catch
+            {
+                Log.Error("SendCustomPacket: Failed to send packet");
+            }
+        }
 
 
 

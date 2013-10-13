@@ -15,7 +15,7 @@ namespace WarhammerEmu
     public partial class Form1 : Form
     {
 
-
+        public static WarhammerEmu.GameServer.Connection activeConnection;
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern bool AllocConsole();
 
@@ -68,8 +68,10 @@ namespace WarhammerEmu
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
-            Console.WriteLine("test");
+            if (activeConnection != null)
+            {   
+                    activeConnection.SendCustomPacket(richTextBox1.Text);   
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
