@@ -5,9 +5,9 @@ namespace WarhammerEmu
     public static class Log
     {
 
-        private static readonly ConsoleColor warn = ConsoleColor.DarkRed;
+        private static readonly ConsoleColor warn = ConsoleColor.Red;
         private static readonly ConsoleColor trace = ConsoleColor.Yellow;
-        private static readonly ConsoleColor debug = ConsoleColor.DarkGreen;
+        private static readonly ConsoleColor debug = ConsoleColor.Green;
 
 
         private static void write(object obj, ConsoleColor color)

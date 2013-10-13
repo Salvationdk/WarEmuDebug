@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarPatcher", "WarPatcher\WarPatcher.csproj", "{6AAA534D-7B95-4689-BB76-1B9C6F270409}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarServer", "WarServer\WarServer.csproj", "{E459901B-DFC8-4913-A6C7-74211E615115}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6AAA534D-7B95-4689-BB76-1B9C6F270409} = {6AAA534D-7B95-4689-BB76-1B9C6F270409}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

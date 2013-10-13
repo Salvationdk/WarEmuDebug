@@ -13,14 +13,22 @@ namespace WarhammerEmu.GameServer
         public Socket socket;
         private const int bufferSize = 16 * 1024;
         private byte[] buffer = new byte[bufferSize];
-        private PacketHandler handler;
         private Listener listener;
         public Connection(Socket socket,Listener listener)
         {
+
+            PacketOut.SizeLen = sizeof(UInt16);
+            PacketOut.OpcodeInLen = false;
+            PacketOut.SizeInLen = false;
+            PacketOut.OpcodeReverse = false;
+            PacketOut.SizeReverse = false;
+            PacketOut.Struct = PackStruct.SizeAndOpcode;
+
+
+
             this.socket = socket;
             this.listener = listener;
             Log.Debug("New connection");
-            handler = new PacketHandler(this); 
 
             this.socket.BeginReceive(buffer, 0, bufferSize, SocketFlags.None, new AsyncCallback(RecieveCallBack), this.socket);
         }
@@ -122,8 +130,8 @@ namespace WarhammerEmu.GameServer
                             Packet.Size = (ulong)PacketSize;
 
 
-                            handler.HandlePacket(Packet);
-
+                           // handler.HandlePacket(Packet);
+                            listener.HandlePacket(this, Packet);
 
                             PacketLength -= PacketSize + 2;
                         }

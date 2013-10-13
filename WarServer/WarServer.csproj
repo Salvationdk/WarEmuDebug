@@ -8,7 +8,7 @@
     <ProjectGuid>{E459901B-DFC8-4913-A6C7-74211E615115}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WarServer</RootNamespace>
+    <RootNamespace>WarhammerEmu</RootNamespace>
     <AssemblyName>WarServer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -65,7 +65,11 @@
     <Compile Include="GameServer\Crypto\RC4Crypto.cs" />
     <Compile Include="GameServer\Listener.cs" />
     <Compile Include="GameServer\Opcodes.cs" />
-    <Compile Include="GameServer\PacketHandler.cs" />
+    <Compile Include="GameServer\PacketHandler\IPacketHandler.cs" />
+    <Compile Include="GameServer\PacketHandler\PacketHandlerAttribute.cs" />
+    <Compile Include="GameServer\Packets\Authentication.cs" />
+    <Compile Include="GameServer\Packets\CharacterResponse.cs" />
+    <Compile Include="GameServer\Packets\Encryptions.cs" />
     <Compile Include="LoginServer\Opcodes.cs" />
     <Compile Include="LoginServer\Connection.cs" />
     <Compile Include="LoginServer\Listener.cs" />
@@ -104,6 +108,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

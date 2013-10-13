@@ -13,6 +13,7 @@ namespace WarhammerEmu.GameServer
         private string hostIp;
         private int hostPort;
         protected static Socket m_socket;
+        public readonly PacketFunction[] m_packetHandlers = new PacketFunction[0xFFFFFF];
 
         public Listener(string hostIp, int hostPort)
         {
@@ -24,6 +25,7 @@ namespace WarhammerEmu.GameServer
             Log.Debug("GameServer: Listening for connections..");
             try
             {
+                LoadPacketHandler();
                 LoadCryptHandler();
                 m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 m_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
@@ -77,6 +79,65 @@ namespace WarhammerEmu.GameServer
                 return null;
         }
 
+
+        public void LoadPacketHandler()
+        {
+
+
+            Log.Debug("GameServer: Loading the Packet Handler");
+
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (Type type in assembly.GetTypes())
+                {
+                    // Pick up a class
+                    if (type.IsClass != true)
+                        continue;
+
+                    if (type.IsSubclassOf(typeof(IPacketHandler)))
+                        continue;
+
+                    foreach (MethodInfo m in type.GetMethods())
+                        foreach (object at in m.GetCustomAttributes(typeof(PacketHandlerAttribute), false))
+                        {
+                            PacketHandlerAttribute attr = at as PacketHandlerAttribute;
+                            PacketFunction handler = (PacketFunction)Delegate.CreateDelegate(typeof(PacketFunction), m);
+
+                            Log.Debug("GameServer: Registering handler for opcode : " + attr.Opcode.ToString("X8"));
+                            m_packetHandlers[attr.Opcode] = handler;
+                        }
+                }
+            }
+        }
+
+
+
+        public void HandlePacket(Connection conn, PacketIn Packet)
+        {
+           
+            PacketFunction packetHandler = null;
+
+            if (Packet.Opcode < (ulong)m_packetHandlers.Length)
+                packetHandler = m_packetHandlers[Packet.Opcode];
+            else
+                Log.Error("HandlePacket: ", "Can not handle :" + Packet.Opcode + "(" + Packet.Opcode.ToString("X8") + ")");
+
+            if (packetHandler != null)
+            {
+                PacketHandlerAttribute[] packethandlerattribs = (PacketHandlerAttribute[])packetHandler.GetType().GetCustomAttributes(typeof(PacketHandlerAttribute), true);
+
+                try
+                {
+                    packetHandler.Invoke(conn, Packet);
+                }
+                catch (Exception e)
+                {
+                    Log.Error("HandlePacket: ", "Packet handler error :" + Packet.Opcode + " " + e.ToString());
+                }
+            }
+            else
+                Log.Error("HandlePacket: ", "Can not Handle opcode :" + Packet.Opcode + "(" + Packet.Opcode.ToString("X8") + ")");
+        }
 
         static public int GetTimeStamp()
         {

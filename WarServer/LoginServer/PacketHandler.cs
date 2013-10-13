@@ -138,8 +138,8 @@ namespace WarhammerEmu.LoginServer
                         break;
                     
             }
-            Log.Trace("PacketIn > " + packet.Opcode);
-            Log.Trace("PacketIn > " + BitConverter.ToString(packet.ToArray()).Replace("-", " "));
+            //Log.Trace("PacketIn > " + packet.Opcode);
+            //Log.Trace("PacketIn > " + BitConverter.ToString(packet.ToArray()).Replace("-", " "));
         }
 
         private void onVerifyProtocolReq(PacketIn packet)
