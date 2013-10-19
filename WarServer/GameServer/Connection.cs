@@ -14,6 +14,7 @@ namespace WarhammerEmu.GameServer
         private const int bufferSize = 16 * 1024;
         private byte[] buffer = new byte[bufferSize];
         private Listener listener;
+
         public Connection(Socket socket,Listener listener)
         {
 
