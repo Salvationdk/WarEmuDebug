@@ -107,27 +107,22 @@ namespace WarhammerEmu.GameServer
 
             */
 
-
-           // PacketOut Out = new PacketOut((byte)Opcodes.S_PLAYER_INITTED);
-           // Out.WriteHexStringBytes("29D8 0000 000035C4 1482 0000 000FF255 00191C5A 0000 00 02 0000000000 04 0001 00 6B 000000000000095761727073746F6E65000000");
-           // conn.SendTCP(Out);
-
+            int Xoffset = 36 * 2 << 12;
+            int Yoffset = 60 * 2 << 12;
 
             PacketOut Out = new PacketOut((byte)Opcodes.S_PLAYER_INITTED);
             Out.WriteUInt16(0x29D8);   //_ObjectId
             Out.WriteUInt16(0);
             Out.WriteUInt32((uint)0x000035C4);   //CharacterId
-            Out.WriteUInt16((ushort)0x1482);   // WorldZ,0x1D7F
+            Out.WriteUInt16(0x1482);   // WorldZ,0x1482
             Out.WriteUInt16(0);
-            Out.WriteUInt32((uint)0x000FF255);  //WorldX,0x000CF824
-            Out.WriteUInt32((uint)0x00191C5A);   //WorldY , 0x000CAFC7
-            Out.WriteUInt16((ushort)0x0);    // WorldO  , 0x0510
+            Out.WriteUInt32(0x000FF255);  //WorldX,0x000FF255  ,(uint)Xoffset + 0xFFF
+            Out.WriteUInt32(0x00191C5A);   //WorldY , 0x00191C5A  , (uint)Yoffset + 0xFFF
+            Out.WriteUInt16(0x0510);    // WorldO  , 0x0510
             Out.WriteByte(0);
             Out.WriteByte((byte)0x02);   //Realm
-            Out.Fill(0, 5); // ??
-            // Out.Fill(0, 2);
-            // Out.WriteInt32R(0xFFFFFF);
-            Out.WriteByte((byte)0x04);   //Region , 0x08
+            Out.Fill(0, 4); // ??
+            Out.WriteUInt16(0x04);   //Region , 0x04
             Out.WriteUInt16(1);
             Out.WriteByte(0);
             Out.WriteByte(0x6B);   //Career sorc
@@ -135,8 +130,8 @@ namespace WarhammerEmu.GameServer
             Out.WritePascalString("Emu");  // server name
             Out.Fill(0, 3);
             conn.SendTCP(Out);
-
-            Mounts.SummonMount1(conn);
+            Mounts.MountPacketTest(conn);
+           // Mounts.SummonMount1(conn);
             Mounts.UpdateSpeed(conn);
             Log.Trace("F_INIT_PLAYER");
         }

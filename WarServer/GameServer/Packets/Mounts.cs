@@ -26,5 +26,14 @@ namespace WarhammerEmu.GameServer
             Out.WriteHexStringBytes("00C80100");// speed 200
             conn.SendTCP(Out);
         }
+
+        public static void MountPacketTest(Connection conn)
+        {
+            PacketOut Out = new PacketOut((byte)Opcodes.F_MOUNT_UPDATE);
+            Out.WriteUInt16(0x29D8); // Object Id
+           // Out.WriteHexStringBytes("29D806BE1DF20000000000000000000000000000");
+            Out.WriteUInt16(1286); // Model ID of mount
+            conn.SendTCP(Out);
+        }
     }
 }

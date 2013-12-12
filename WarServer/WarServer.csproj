@@ -72,6 +72,7 @@
     <Compile Include="GameServer\Packets\Encryptions.cs" />
     <Compile Include="GameServer\Packets\Mounts.cs" />
     <Compile Include="GameServer\Packets\Movement.cs" />
+    <Compile Include="GameServer\Packets\PacketBuilder.cs" />
     <Compile Include="GameServer\Player.cs" />
     <Compile Include="LoginServer\Opcodes.cs" />
     <Compile Include="LoginServer\Connection.cs" />
